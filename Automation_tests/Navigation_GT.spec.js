@@ -13,7 +13,10 @@ test("Navigation - File", async ({ page }) => {
   await page.getByRole("button", { name: "Login" }).click();
   await expect(page).toHaveTitle("Gentrack Launch Pad - Ovo Energy - PREPROD");
   // Navigate to error events page and check the title
-  await page.locator('[id="GenUI\\.MenuControl_3_input"]').fill("error");
+  await page.locator('[id="GenUI\\.MenuControl_3_input"]').click();
+  await page.keyboard.insertText('Error');
+  //Handler event is for keydown,keyup only. Search will not work without this.
+  await page.keyboard.press('ArrowDown');
   await page.getByText("View Error Events").click();
   await expect(page).toHaveTitle("Error Events - Ovo Energy - PREPROD");
 });
@@ -27,7 +30,10 @@ test('Navigation - Run IFM Process', async ({ page }) => {
   await page.getByRole('button', { name: 'Login' }).click();
   await expect(page).toHaveTitle("Gentrack Launch Pad - Ovo Energy - PREPROD");
   // Navigate to File Interface Manager
-  await page.locator('[id="GenUI\\.MenuControl_3_input"]').fill('file');
+  await page.locator('[id="GenUI\\.MenuControl_3_input"]');
+  await page.keyboard.insertText('File');
+  //Handler event is for keydown,keyup only. Search will not work without this.
+  await page.keyboard.press('ArrowDown');
   await page.getByText('File Interface Manager').click();
   await expect(page).toHaveTitle("Interface File Manager - Ovo Energy - PREPROD")
   // Run Load process
