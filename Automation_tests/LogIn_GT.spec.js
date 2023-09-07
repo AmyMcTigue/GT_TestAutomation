@@ -19,7 +19,7 @@ test('GT Login - Pass', async ({page}) => {
   await page.getByLabel("User Name").fill(userName);
   await page.getByLabel("Password").fill(rightPassword);
   await page.getByRole("button", { name: "Login" }).click();
-  await page.waitForTimeout(10000);
+  await page.url('http://gt-preprod:8081/#');
   await expect(page).toHaveTitle("Gentrack Launch Pad - Ovo Energy - PREPROD");
 });
 
