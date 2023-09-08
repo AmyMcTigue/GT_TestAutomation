@@ -2,6 +2,7 @@
 import { test, expect } from "@playwright/test";
 import "dotenv/config";
 
+// .ENV variables for login 
 const userName = process.env.USER_NAME;
 const rightPassword = process.env.RIGHT_PASSWORD;
 
@@ -20,7 +21,7 @@ test.describe("All tests", () => {
     await expect(page).toHaveTitle("Gentrack Launch Pad - Ovo Energy - PREPROD");
   });
 
-  test("Navigation - File", async ({ page }) => {
+  test("Navigation - Search Errors", async ({ page }) => {
     // Navigate to error events page and check the title
     await page.locator('[id="GenUI\\.MenuControl_3_input"]').click();
     await page.keyboard.insertText("Error");
@@ -43,17 +44,56 @@ test.describe("All tests", () => {
     await page.getByRole("button", { name: "Next" }).click();
   });
 
-  test.only("Navigation - Customer Search", async ({ page }) => {
+  
+  TODO:// Add before and after hooks for the test below 
+
+  test("Navigation - Customer Account Search", async ({ page }) => {
     // Search with Account Number
     await page.getByText("Customer Search").click();
     await expect(page).toHaveTitle("Search for a Customer entity - Ovo Energy - PREPROD");
     await page.getByRole("button", { name: "Next" }).click();
-    //the text fields are dynamic and difficult to identify o9n the DOM 😢 - 
-    //need to figure out how to search where the numerical value is variable within the id
-    await page.locator('id="GenUI\.PromptControl_3_prompts_0_body"').fill(accountNumber);
+    // Xpath for the account number search field 
+    await page.locator('xpath=//html/body/div[3]/div[3]/div/div[1]/div[1]/div[2]/div[1]/div/table/tbody/tr[1]/td[1]/div/input').fill(accountNumber);
     await page.getByRole("button", { name: "Next" }).click();
+    // Xpath for first row in the search results - click to select 
+    await page.locator('xpath=//html/body/div[3]/div[3]/div/div[1]/div/div[2]/div[1]/div/div[4]/table/tbody/tr/td[1]/span').click(); // Click on the first row
+    await page.keyboard.press("ArrowUp");
+    await page.keyboard.press("Enter");
+    // Assertion to confirm on the customer account page
+    await expect(page.locator('xpath=//html/body/div[3]/div[3]/div/div[1]/div/div[1]/div/div[1]/span')).toHaveText('Customer Entities');
+  });
+
+  test.only('Navigation - Customer Search - Consumer Number', async ({ page }) => {
+// Search with Consumer Number
+await page.getByText("Customer Search").click();
+await expect(page).toHaveTitle("Search for a Customer entity - Ovo Energy - PREPROD");
+await page.getByRole("button", { name: "Next" }).click();
+// Xpath for the account number search field 
+await page.locator('xpath=//html/body/div[3]/div[3]/div/div[1]/div[3]/div[2]/div[1]/div/table/tbody/tr[1]/td[1]/div/input').fill(consumerNumber);
+await page.getByRole("button", { name: "Next" }).click();
+// Xpath for first row in the search results - click to select 
+await page.locator('xpath=//html/body/div[3]/div[3]/div/div[1]/div/div[2]/div[1]/div/div[4]/table/tbody/tr/td[1]/span').click(); // Click on the first row
+await page.keyboard.press("ArrowUp");
+await page.keyboard.press("Enter");
+// Assertion to confirm on the customer account page
+await expect(page.locator('xpath=//html/body/div[3]/div[3]/div/div[1]/div/div[1]/div/div[1]/span')).toHaveText('Customer Entities');
+  }); 
+
+  test('Navigation - Customer Search - Installation Identifier', async ({ page }) => {
+    // Search with Identifer
+await page.getByText("Customer Search").click();
+await expect(page).toHaveTitle("Search for a Customer entity - Ovo Energy - PREPROD");
+await page.getByRole("button", { name: "Next" }).click();
+// Xpath for the account number search field 
+await page.locator('xpath=//html/body/div[3]/div[3]/div/div[1]/div[2]/div[2]/div[1]/div/table/tbody/tr[4]/td[1]/div/input').fill(installtionIdentifer);
+await page.getByRole("button", { name: "Next" }).click();
+// Xpath for first row in the search results - click to select 
+await page.locator('xpath=//html/body/div[3]/div[3]/div/div[1]/div/div[2]/div[1]/div/div[4]/table/tbody/tr/td[1]/span').click(); // Click on the first row
+await page.keyboard.press("ArrowUp");
+await page.keyboard.press("Enter");
+// Assertion to confirm on the customer account page
+await expect(page.locator('xpath=//html/body/div[3]/div[3]/div/div[1]/div/div[1]/div/div[1]/span')).toHaveText('Customer Entities');
   });
 });
-
 
 
