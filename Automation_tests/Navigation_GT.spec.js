@@ -44,55 +44,49 @@ test.describe("All tests", () => {
     await page.getByRole("button", { name: "Next" }).click();
   });
 
+  // Group of tests for customer search - Search with Account Number, Consumer Number, Installation Identifier 
+  test.describe("Customer Search", () => {
+    test.beforeEach(async ({ page }) => {
+      // Navigate to customer search page and check the title
+      await page.getByText("Customer Search").click();
+      await expect(page).toHaveTitle("Search for a Customer entity - Ovo Energy - PREPROD");
+      await page.getByRole("button", { name: "Next" }).click();
+    }); 
+
+    test.afterEach(async ({ page }) => {
+       // Assertion to confirm on the customer account page
+       await expect(page.locator('xpath=//html/body/div[3]/div[3]/div/div[1]/div/div[1]/div/div[1]/span')).toHaveText('Customer Entities');
+    });
+
+    test("Navigation - Customer Account Search", async ({ page }) => {
+      // Search with Account Number - Xpath for the account number search field 
+      await page.locator('xpath=//html/body/div[3]/div[3]/div/div[1]/div[1]/div[2]/div[1]/div/table/tbody/tr[1]/td[1]/div/input').fill(accountNumber);
+      await page.getByRole("button", { name: "Next" }).click();
+      // Xpath for first row in the search results - click to select 
+      await page.locator('xpath=//html/body/div[3]/div[3]/div/div[1]/div/div[2]/div[1]/div/div[4]/table/tbody/tr/td[1]/span').click(); // Click on the first row
+      await page.keyboard.press("ArrowUp");
+      await page.keyboard.press("Enter");
+    });
   
-  TODO:// Add before and after hooks for the test below 
-
-  test("Navigation - Customer Account Search", async ({ page }) => {
-    // Search with Account Number
-    await page.getByText("Customer Search").click();
-    await expect(page).toHaveTitle("Search for a Customer entity - Ovo Energy - PREPROD");
-    await page.getByRole("button", { name: "Next" }).click();
-    // Xpath for the account number search field 
-    await page.locator('xpath=//html/body/div[3]/div[3]/div/div[1]/div[1]/div[2]/div[1]/div/table/tbody/tr[1]/td[1]/div/input').fill(accountNumber);
-    await page.getByRole("button", { name: "Next" }).click();
-    // Xpath for first row in the search results - click to select 
-    await page.locator('xpath=//html/body/div[3]/div[3]/div/div[1]/div/div[2]/div[1]/div/div[4]/table/tbody/tr/td[1]/span').click(); // Click on the first row
-    await page.keyboard.press("ArrowUp");
-    await page.keyboard.press("Enter");
-    // Assertion to confirm on the customer account page
-    await expect(page.locator('xpath=//html/body/div[3]/div[3]/div/div[1]/div/div[1]/div/div[1]/span')).toHaveText('Customer Entities');
-  });
-
-  test.only('Navigation - Customer Search - Consumer Number', async ({ page }) => {
-    // Search with Consumer Number
-    await page.getByText("Customer Search").click();
-    await expect(page).toHaveTitle("Search for a Customer entity - Ovo Energy - PREPROD");
-    await page.getByRole("button", { name: "Next" }).click();
-    // Xpath for the account number search field 
-    await page.locator('xpath=//html/body/div[3]/div[3]/div/div[1]/div[3]/div[2]/div[1]/div/table/tbody/tr[1]/td[1]/div/input').fill(consumerNumber);
-    await page.getByRole("button", { name: "Next" }).click();
-    // Xpath for first row in the search results - click to select 
-    await page.locator('xpath=//html/body/div[3]/div[3]/div/div[1]/div/div[2]/div[1]/div/div[4]/table/tbody/tr/td[1]/span').click(); // Click on the first row
-    await page.keyboard.press("ArrowUp");
-    await page.keyboard.press("Enter");
-    // Assertion to confirm on the customer account page
-    await expect(page.locator('xpath=//html/body/div[3]/div[3]/div/div[1]/div/div[1]/div/div[1]/span')).toHaveText('Customer Entities');
-  }); 
-
-  test('Navigation - Customer Search - Installation Identifier', async ({ page }) => {
-    // Search with Identifer
-    await page.getByText("Customer Search").click();
-    await expect(page).toHaveTitle("Search for a Customer entity - Ovo Energy - PREPROD");
-    await page.getByRole("button", { name: "Next" }).click();
-    // Xpath for the account number search field 
-    await page.locator('xpath=//html/body/div[3]/div[3]/div/div[1]/div[2]/div[2]/div[1]/div/table/tbody/tr[4]/td[1]/div/input').fill(installtionIdentifer);
-    await page.getByRole("button", { name: "Next" }).click();
-    // Xpath for first row in the search results - click to select 
-    await page.locator('xpath=//html/body/div[3]/div[3]/div/div[1]/div/div[2]/div[1]/div/div[4]/table/tbody/tr/td[1]/span').click(); // Click on the first row
-    await page.keyboard.press("ArrowUp");
-    await page.keyboard.press("Enter");
-    // Assertion to confirm on the customer account page
-    await expect(page.locator('xpath=//html/body/div[3]/div[3]/div/div[1]/div/div[1]/div/div[1]/span')).toHaveText('Customer Entities');
+    test('Navigation - Customer Search - Consumer Number', async ({ page }) => {
+      // Search with Consumer Number - Xpath for the account number search field 
+      await page.locator('xpath=//html/body/div[3]/div[3]/div/div[1]/div[3]/div[2]/div[1]/div/table/tbody/tr[1]/td[1]/div/input').fill(consumerNumber);
+      await page.getByRole("button", { name: "Next" }).click();
+      // Xpath for first row in the search results - click to select 
+      await page.locator('xpath=//html/body/div[3]/div[3]/div/div[1]/div/div[2]/div[1]/div/div[4]/table/tbody/tr/td[1]/span').click(); // Click on the first row
+      await page.keyboard.press("ArrowUp");
+      await page.keyboard.press("Enter");
+    }); 
+  
+    test('Navigation - Customer Search - Installation Identifier', async ({ page }) => {
+      // Search with Identifer - Xpath for the account number search field 
+      await page.locator('xpath=//html/body/div[3]/div[3]/div/div[1]/div[2]/div[2]/div[1]/div/table/tbody/tr[4]/td[1]/div/input').fill(installtionIdentifer);
+      await page.getByRole("button", { name: "Next" }).click();
+      // Xpath for first row in the search results - click to select 
+      await page.locator('xpath=//html/body/div[3]/div[3]/div/div[1]/div/div[2]/div[1]/div/div[4]/table/tbody/tr/td[1]/span').click(); // Click on the first row
+      await page.keyboard.press("ArrowUp");
+      await page.keyboard.press("Enter");
+    }); 
   });
 });
 
