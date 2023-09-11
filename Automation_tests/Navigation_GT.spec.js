@@ -2,7 +2,7 @@
 import { test, expect } from "@playwright/test";
 import "dotenv/config";
 
-// .ENV variables for login 
+// .ENV variables for login
 const userName = process.env.USER_NAME;
 const rightPassword = process.env.RIGHT_PASSWORD;
 
@@ -11,17 +11,18 @@ const installtionIdentifer = "1023543607760";
 const accountNumber = "8742471";
 const consumerNumber = "10668442";
 
-test.describe("All tests", () => {
-  test.beforeEach(async ({ page }) => {
+// Group for all tests to login and navigate to the home page
+test.describe("All test - Login Group", () => {
+  test.beforeEach(async ({page}) => {
     await page.goto("http://gt-preprod:8081/MOD/UI/LOGIN?RelayState=");
     await page.getByLabel("User Name").fill(userName);
     await page.getByLabel("Password").fill(rightPassword);
     await page.getByRole("button", { name: "Login" }).click();
-    await page.url('http://gt-preprod:8081/#');
+    await page.url("http://gt-preprod:8081/#");
     await expect(page).toHaveTitle("Gentrack Launch Pad - Ovo Energy - PREPROD");
   });
 
-  test("Navigation - Search Errors", async ({ page }) => {
+  test("Navigation - Search Errors", async ({page}) => {
     // Navigate to error events page and check the title
     await page.locator('[id="GenUI\\.MenuControl_3_input"]').click();
     await page.keyboard.insertText("Error");
@@ -31,7 +32,7 @@ test.describe("All tests", () => {
     await expect(page).toHaveTitle("Error Events - Ovo Energy - PREPROD");
   });
 
-  test("Navigation - Run IFM Process", async ({ page }) => {
+  test("Navigation - Run IFM Process", async ({page}) => {
     // Navigate to File Interface Manager
     await page.locator('[id="GenUI\\.MenuControl_3_input"]');
     await page.keyboard.insertText("File");
@@ -44,50 +45,48 @@ test.describe("All tests", () => {
     await page.getByRole("button", { name: "Next" }).click();
   });
 
-  // Group of tests for customer search - Search with Account Number, Consumer Number, Installation Identifier 
+  // Group of tests for customer search - Search with Account Number, Consumer Number, Installation Identifier
   test.describe("Customer Search", () => {
-    test.beforeEach(async ({ page }) => {
+    test.beforeEach(async ({page}) => {
       // Navigate to customer search page and check the title
       await page.getByText("Customer Search").click();
       await expect(page).toHaveTitle("Search for a Customer entity - Ovo Energy - PREPROD");
       await page.getByRole("button", { name: "Next" }).click();
-    }); 
-
-    test.afterEach(async ({ page }) => {
-       // Assertion to confirm on the customer account page
-       await expect(page.locator('xpath=//html/body/div[3]/div[3]/div/div[1]/div/div[1]/div/div[1]/span')).toHaveText('Customer Entities');
     });
 
-    test("Navigation - Customer Account Search", async ({ page }) => {
-      // Search with Account Number - Xpath for the account number search field 
-      await page.locator('xpath=//html/body/div[3]/div[3]/div/div[1]/div[1]/div[2]/div[1]/div/table/tbody/tr[1]/td[1]/div/input').fill(accountNumber);
+    test.afterEach(async ({page}) => {
+      // Assertion to confirm on the customer account page
+      await expect(page.locator("xpath=//html/body/div[3]/div[3]/div/div[1]/div/div[1]/div/div[1]/span")).toHaveText("Customer Entities");
+    });
+
+    test("Navigation - Customer Account Search", async ({page}) => {
+      // Search with Account Number - Xpath for the account number search field
+      await page.locator("xpath=//html/body/div[3]/div[3]/div/div[1]/div[1]/div[2]/div[1]/div/table/tbody/tr[1]/td[1]/div/input").fill(accountNumber);
       await page.getByRole("button", { name: "Next" }).click();
-      // Xpath for first row in the search results - click to select 
-      await page.locator('xpath=//html/body/div[3]/div[3]/div/div[1]/div/div[2]/div[1]/div/div[4]/table/tbody/tr/td[1]/span').click(); // Click on the first row
+      // Xpath for first row in the search results - click to select
+      await page.locator("xpath=//html/body/div[3]/div[3]/div/div[1]/div/div[2]/div[1]/div/div[4]/table/tbody/tr/td[1]/span").click(); // Click on the first row
       await page.keyboard.press("ArrowUp");
       await page.keyboard.press("Enter");
     });
-  
-    test('Navigation - Customer Search - Consumer Number', async ({ page }) => {
-      // Search with Consumer Number - Xpath for the account number search field 
-      await page.locator('xpath=//html/body/div[3]/div[3]/div/div[1]/div[3]/div[2]/div[1]/div/table/tbody/tr[1]/td[1]/div/input').fill(consumerNumber);
+
+    test("Navigation - Customer Search - Consumer Number", async ({page}) => {
+      // Search with Consumer Number - Xpath for the account number search field
+      await page.locator("xpath=//html/body/div[3]/div[3]/div/div[1]/div[3]/div[2]/div[1]/div/table/tbody/tr[1]/td[1]/div/input").fill(consumerNumber);
       await page.getByRole("button", { name: "Next" }).click();
-      // Xpath for first row in the search results - click to select 
-      await page.locator('xpath=//html/body/div[3]/div[3]/div/div[1]/div/div[2]/div[1]/div/div[4]/table/tbody/tr/td[1]/span').click(); // Click on the first row
+      // Xpath for first row in the search results - click to select
+      await page.locator("xpath=//html/body/div[3]/div[3]/div/div[1]/div/div[2]/div[1]/div/div[4]/table/tbody/tr/td[1]/span").click(); // Click on the first row
       await page.keyboard.press("ArrowUp");
       await page.keyboard.press("Enter");
-    }); 
-  
-    test('Navigation - Customer Search - Installation Identifier', async ({ page }) => {
-      // Search with Identifer - Xpath for the account number search field 
-      await page.locator('xpath=//html/body/div[3]/div[3]/div/div[1]/div[2]/div[2]/div[1]/div/table/tbody/tr[4]/td[1]/div/input').fill(installtionIdentifer);
+    });
+
+    test("Navigation - Customer Search - Installation Identifier", async ({page}) => {
+      // Search with Identifer - Xpath for the account number search field
+      await page.locator("xpath=//html/body/div[3]/div[3]/div/div[1]/div[2]/div[2]/div[1]/div/table/tbody/tr[4]/td[1]/div/input").fill(installtionIdentifer);
       await page.getByRole("button", { name: "Next" }).click();
-      // Xpath for first row in the search results - click to select 
-      await page.locator('xpath=//html/body/div[3]/div[3]/div/div[1]/div/div[2]/div[1]/div/div[4]/table/tbody/tr/td[1]/span').click(); // Click on the first row
+      // Xpath for first row in the search results - click to select
+      await page.locator("xpath=//html/body/div[3]/div[3]/div/div[1]/div/div[2]/div[1]/div/div[4]/table/tbody/tr/td[1]/span").click(); // Click on the first row
       await page.keyboard.press("ArrowUp");
       await page.keyboard.press("Enter");
-    }); 
+    });
   });
 });
-
-
