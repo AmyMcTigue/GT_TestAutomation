@@ -4,7 +4,7 @@ import 'dotenv/config';
 const userName = process.env.USER_NAME;
 const rightPassword = process.env.RIGHT_PASSWORD;
 
-const processName = "MIS_BATCHLETTER"; 
+const processName = "MIS_COT_UPDATE"; 
 
     test.beforeEach(async ({page}) => {
         await page.goto('http://gt-preprod:8081/MOD/UI/LOGIN?RelayState=');
@@ -27,25 +27,23 @@ const processName = "MIS_BATCHLETTER";
         await page.getByRole('button', {name: 'View grid'}).click(); 
         await page.getByText(processName).dblclick(); 
         await expect(page).toHaveTitle("Maintain Process Schedule - Ovo Energy - PREPROD"); 
-        
-        // TODO: If statement still not working as expected. Error - Timed out 5000ms waiting for expect(received).toBeVisible()
-        // Call log:
-        // - expect.toBeVisible with timeout 5000ms
-        // - waiting for getByRole('cell', { name: 'Pause Flag' })  
 
+        const pauseFlag = await page.getByRole('cell', { name: 'Pause Flag' }).isVisible(); 
 
         // To turn on process
-        if (await expect(page.getByRole('cell', { name: 'Pause Flag' })).toBeVisible()) {
-                // To turn on schedule use the below line
-                await page.getByRole('link', { name: 'Schedule Run Status' }).click(); 
-                await expect(page).toHaveTitle("Change Schedule Run Status - Ovo Energy - PREPROD"); 
-                await page.locator('div').filter({ hasText: /^Reset schedule to run normally$/ }).click();
-                await page.getByRole("button", { name: "Next" }).click();
-                await expect(page).toHaveTitle("Maintain Process Schedule - Ovo Energy - PREPROD");
-                } else if (await expect(page.getByRole('cell',{name:'Pause Flag'})).toBeHidden) {
+        if (pauseFlag == true) {
+            await page.getByRole('link', { name: 'Schedule Run Status' }).click(); 
+            await expect(page).toHaveTitle("Change Schedule Run Status - Ovo Energy - PREPROD"); 
+            await page.locator('div').filter({ hasText: /^Reset schedule to run normally$/ })
+            await page.getByRole("button", { name: "Next" }).click();
+            await expect(page).toHaveTitle("Maintain Process Schedule - Ovo Energy - PREPROD");
+            } else {
                     console.log('Process Schedule already enabled');;
                     await expect(page).toHaveTitle("Maintain Process Schedule - Ovo Energy - PREPROD");
-                    }   
+                  }  
+
+
+
         // // To turn off schedule use the below line
         // await page.getByText('Manually suspend schedule from running').click();
         // await page.getByRole("button", { name: "Next" }).click();

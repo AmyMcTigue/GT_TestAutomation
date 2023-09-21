@@ -1,6 +1,7 @@
 {
   "dependencies": {
-    "dotenv": "^16.3.1"
+    "dotenv": "^16.3.1",
+    "soap": "^1.0.0"
   },
   "devDependencies": {
     "@playwright/test": "^1.37.1"
