@@ -15,7 +15,7 @@ const processName = "MIS_COT_UPDATE";
         await expect(page).toHaveTitle('Gentrack Launch Pad - Ovo Energy - PREPROD');
     });
 
-    test('Turn on/off process schedules', async ({page}) => {
+    test('Turn on process schedule', async ({page}) => {
         await page.locator('[id="GenUI\\.MenuControl_3_input"]').click();
         await page.keyboard.insertText("process");
         // Handler event is for keydown,keyup only. Search will not work without this.
@@ -41,11 +41,7 @@ const processName = "MIS_COT_UPDATE";
                     console.log('Process Schedule already enabled');;
                     await expect(page).toHaveTitle("Maintain Process Schedule - Ovo Energy - PREPROD");
                   }  
-
-
-
-        // // To turn off schedule use the below line
-        // await page.getByText('Manually suspend schedule from running').click();
-        // await page.getByRole("button", { name: "Next" }).click();
-        // await expect(page).toHaveTitle("Maintain Process Schedule - Ovo Energy - PREPROD"); 
     });
+
+
+
